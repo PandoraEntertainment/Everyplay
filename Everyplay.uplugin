@@ -1,0 +1,22 @@
+{
+	"FileVersion": 1,
+	"Version": 1,
+	"VersionName": "1.0",
+	"FriendlyName": "Everyplay",
+	"Description": "This plugin record/shares gameplay videos via Everyplay.",
+	"Category": "Video Recording/Sharing",
+	"CreatedBy": "Pandora Entertainment Ltd",
+	"DocsURL": "",
+	"MarketplaceURL": "",
+	"Modules": [
+		{
+			"Name": "Everyplay",
+			"Type": "Runtime",
+			"LoadingPhase": "Default"
+		}
+	],
+	"EnabledByDefault": false,
+	"CanContainContent": false,
+	"IsBetaVersion": false,
+	"Installed": false
+}

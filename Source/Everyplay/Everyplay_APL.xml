@@ -1,0 +1,412 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--GearVR plugin additions-->
+<root xmlns:android="http://schemas.android.com/apk/res/android">
+	<!-- init section is always evaluated once per architecture -->
+	<trace enable="true"/>
+	<init>
+		<log text="Everyplay init"/>		
+	</init>
+
+  <androidManifestUpdates>
+    <addElements tag="application">
+      <activity
+            android:name="com.everyplay.Everyplay.view.EveryplaySocialActivity"
+            android:configChanges="keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="sensor"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name="com.everyplay.Everyplay.view.EveryplayTextInputActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize"
+            android:hardwareAccelerated="false"
+            android:screenOrientation="sensor"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:windowSoftInputMode="stateVisible|adjustResize" />
+        <activity
+            android:name="com.everyplay.Everyplay.view.videoplayer.EveryplayVideoPlayerActivity"
+            android:configChanges="keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="sensor"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name="com.everyplay.Everyplay.view.videoplayer.EveryplayVideoEditorActivity"
+            android:configChanges="keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="sensor"
+            android:theme="@android:style/Theme.NoTitleBar.Fullscreen"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name="com.everyplay.Everyplay.view.EveryplaySharingModalActivity"
+            android:configChanges="keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize"
+            android:fitsSystemWindows="true"
+            android:hardwareAccelerated="true"
+            android:screenOrientation="sensor"
+            android:theme="@style/EveryplaySharingModal"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name="com.everyplay.Everyplay.view.browser.EveryplayBrowserActivity"
+            android:configChanges="keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize"
+            android:hardwareAccelerated="false"
+            android:screenOrientation="sensor"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name="com.everyplay.Everyplay.view.auth.EveryplayAuthActivity"
+            android:configChanges="keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize"
+            android:hardwareAccelerated="false"
+            android:screenOrientation="sensor"
+            android:theme="@android:style/Theme.NoTitleBar"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name="com.everyplay.Everyplay.view.auth.EveryplayAddConnectionActivity"
+            android:configChanges="keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize"
+            android:hardwareAccelerated="false"
+            android:screenOrientation="sensor"
+            android:theme="@android:style/Theme.Dialog"
+            android:windowSoftInputMode="adjustResize" />
+        <activity
+            android:name="com.everyplay.Everyplay.communication.socialnetworks.EveryplayFacebook"
+            android:configChanges="keyboardHidden|orientation|screenLayout|screenSize|smallestScreenSize"
+            android:hardwareAccelerated="false"
+            android:screenOrientation="sensor"
+            android:theme="@android:style/Theme.Dialog"
+            android:windowSoftInputMode="adjustResize" />
+
+        <service android:name="com.everyplay.Everyplay.communication.upload.EveryplayUploadService" />
+    </addElements>
+
+
+    <!-- Read App ID from plugin project settings and add to the manifest -->
+    <setStringFromProperty result="ClientId" ini="Engine" section="/Script/Everyplay.EveryplaySettings" property="ClientId" default=""/>
+    <setElement result="ClientIdMetadata" value="meta-data"/>
+    <addAttribute tag="$ClientIdMetadata" name="android:name" value="com.epicgames.ue4.Everyplay.ClientId"/>
+    <addAttribute tag="$ClientIdMetadata" name="android:value" value="$S(ClientId)"/>
+    <addElement tag="application" name="ClientIdMetadata"/>
+
+    <!-- Read App ID from plugin project settings and add to the manifest -->
+    <setStringFromProperty result="ClientSecret" ini="Engine" section="/Script/Everyplay.EveryplaySettings" property="ClientSecret" default=""/>
+    <setElement result="ClientSecretMetadata" value="meta-data"/>
+    <addAttribute tag="$ClientSecretMetadata" name="android:name" value="com.epicgames.ue4.Everyplay.ClientSecret"/>
+    <addAttribute tag="$ClientSecretMetadata" name="android:value" value="$S(ClientSecret)"/>
+    <addElement tag="application" name="ClientSecretMetadata"/>
+
+    <!-- Read App ID from plugin project settings and add to the manifest -->
+    <setStringFromProperty result="RedirectURI" ini="Engine" section="/Script/Everyplay.EveryplaySettings" property="RedirectURI" default=""/>
+    <setElement result="RedirectURIMetadata" value="meta-data"/>
+    <addAttribute tag="$RedirectURIMetadata" name="android:name" value="com.epicgames.ue4.Everyplay.RedirectURI"/>
+    <addAttribute tag="$RedirectURIMetadata" name="android:value" value="$S(RedirectURI)"/>
+    <addElement tag="application" name="RedirectURIMetadata"/>
+    
+
+  </androidManifestUpdates>
+
+  
+
+
+  <!-- optional additions to proguard -->
+  <proguardAdditions>
+    <insert>
+      -keep public class com.everyplay.external.**
+      -keep public class com.everyplay.Everyplay.Everyplay
+      -keep public class com.everyplay.Everyplay.EveryplayFaceCam
+      -keep public class com.everyplay.Everyplay.EveryplayFaceCamPreviewOrigin
+      -keep public class com.everyplay.Everyplay.EveryplayFaceCamColor
+      -keep public class com.everyplay.Everyplay.communication.EveryplayNativeBridge
+      -keep public interface com.everyplay.Everyplay.IEveryplayListener
+      -keep public class com.everyplay.Everyplay.communication.EveryplayWebAppBridge
+      -keep public class com.everyplay.Everyplay.communication.EveryplayWebViewInputExtensions
+      -keep public class com.everyplay.Everyplay.communication.EveryplayWebAppEventImplementation
+      -keep public class com.everyplay.Everyplay.view.browser.EveryplayBrowserCloseJavascriptInterface
+      -keep public class com.everyplay.Everyplay.unity.EveryplayUnity3DWrapper
+      -keep public class com.everyplay.Everyplay.encoding.MediaMuxer
+      -keep public class android.media.MediaMuxer
+
+      -keep public class **.R {
+      public *;
+      }
+      -keep public class **.R$* {
+      public *;
+      }
+
+      -keep public class * implements com.everyplay.external.iso.boxes.Box
+      -keepclassmembers class * implements com.everyplay.external.iso.boxes.Box {
+      public *;
+      }
+
+      -keepclassmembers class com.everyplay.Everyplay.Everyplay {
+      public *;
+      }
+      -keepclassmembers class com.everyplay.Everyplay.EveryplayFaceCam {
+      public *;
+      }
+      -keep public enum com.everyplay.Everyplay.EveryplayFaceCamPreviewOrigin {
+      **[] $VALUES;
+      public *;
+      }
+      -keepclassmembers class com.everyplay.Everyplay.EveryplayFaceCamColor {
+      public *;
+      }
+      -keepclassmembers class com.everyplay.Everyplay.communication.EveryplayNativeBridge {
+      public *;
+      }
+      -keepclassmembers interface com.everyplay.Everyplay.IEveryplayListener {
+      public *;
+      }
+      -keepclassmembers class com.everyplay.Everyplay.communication.EveryplayWebAppBridge {
+      public *;
+      }
+      -keepclassmembers class com.everyplay.Everyplay.communication.EveryplayWebAppEventImplementation {
+      public *;
+      }
+      -keepclassmembers class com.everyplay.Everyplay.view.browser.EveryplayBrowserCloseJavascriptInterface {
+      public *;
+      }
+      -keepclassmembers class com.everyplay.Everyplay.communication.EveryplayWebViewInputExtensions {
+      public *;
+      }
+      -keepclassmembers class com.everyplay.Everyplay.unity.EveryplayUnity3DWrapper {
+      public *;
+      }
+      -keepclassmembers class com.everyplay.Everyplay.encoding.MediaMuxer {
+      *;
+      }
+      -keepclassmembers class android.media.MediaMuxer {
+      *;
+      }
+      -assumenosideeffects class com.everyplay.Everyplay.device.EveryplayDeviceLog {
+      public static void entered();
+      public static void debug(java.lang.String,java.lang.Object[]);
+      public static void debug(java.lang.String);
+      }
+      -keepclassmembers class * extends com.everyplay.Everyplay.EveryplayAbstractViewComponent {
+      public void *(android.view.View);
+      }
+      <!-- -keep class com.oculus.** {
+   *;
+}
+-keep class android.app.** {
+   *;
+} -->
+
+
+    </insert>
+  </proguardAdditions>
+
+  <!-- optional files or directories to copy to Intermediate/Android/APK -->
+  <resourceCopies>
+    <copyFile src="$S(PluginDir)/../../lib/Android/" dst="$S(BuildDir)/libs/" />
+    <isArch arch="armeabi-v7a">
+			<copyFile src="$S(PluginDir)/../../lib/Android//armeabi-v7a/libeveryplay.so" dst="$S(BuildDir)/libs/armeabi-v7a/libeveryplay.so" />-->
+		</isArch>
+    <!--		<isArch arch="armeabi-v7a">
+			<copyFile src="$S(EngineDir)/Source/ThirdParty/Oculus/LibOVRMobile/LibOVRMobile_062/VrApi/Libs/Android/armeabi-v7a/libvrapi.so"
+						dst="$S(BuildDir)/libs/armeabi-v7a/libvrapi.so" />
+		</isArch>
+		<copyFile src="$S(EngineDir)/Source/ThirdParty/Oculus/LibOVRMobile/LibOVRMobile_062/VrApi/Libs/Android/VrApi.jar"
+					dst="$S(BuildDir)/libs/VrApi.jar" />
+		<copyFile src="$S(EngineDir)/Source/ThirdParty/Oculus/LibOVRMobile/LibOVRMobile_062/1stParty/VrPlatform/libs/vrplatlib.jar"
+					dst="$S(BuildDir)/libs/vrplatlib.jar" />
+		<if condition="bRemoveOSIG">
+			<true>
+				<deleteFiles filespec="assets/oculussig_*" />
+			</true>
+		</if>-->
+
+  </resourceCopies>
+
+  <AARImports>
+    <insertValue value="repository $S(PluginDir)/../../ThirdParty/repository"/>
+    <insertNewline/>
+    <insert>com.everyplay,Everyplay,1.5.4</insert>
+    <insertNewline/>
+  </AARImports>
+
+  <!-- optional additions to the GameActivity imports in GameActivity.java -->
+  <gameActivityImportAdditions>
+    <insert>
+      import com.everyplay.Everyplay.Everyplay;
+      import com.everyplay.Everyplay.EveryplayFaceCamPreviewOrigin;
+      import com.everyplay.Everyplay.EveryplayFaceCamColor;
+      import com.everyplay.Everyplay.IEveryplayListener;
+      import android.util.Log;
+    </insert>
+  </gameActivityImportAdditions>
+
+
+  <!-- optional additions to the GameActivity class in GameActivity.java -->
+  <gameActivityClassAdditions>
+    <insert>
+      private static final String TAG = "RisingBirdsLog";
+
+      public native void nativeEveryplayHidden();
+
+      public native void nativeEveryplayReadyForRecording(int enabled);
+
+
+      private IEveryplayListener Everyplaylistener = new IEveryplayListener()
+      {
+
+      public void onEveryplayShown(){}
+      public void onEveryplayHidden(){
+      nativeEveryplayHidden();
+      }
+      public void onEveryplayReadyForRecording(int enabled){
+      nativeEveryplayReadyForRecording(enabled);
+      AndroidThunkJava_Everyplay_StartRecording();
+      }
+      public void onEveryplayRecordingStarted()
+      {
+      Log.debug("Everyplay.onEveryplayRecordingStarted");
+      }
+      public void onEveryplayRecordingStopped(){}
+      public void onEveryplayFaceCamSessionStarted(){}
+      public void onEveryplayFaceCamRecordingPermission(int granted){}
+      public void onEveryplayFaceCamSessionStopped(){}
+      public void onEveryplayUploadDidStart(int videoId){}
+      public void onEveryplayUploadDidProgress(int videoId, double progress){}
+      public void onEveryplayUploadDidComplete(int videoId){}
+      public void onEveryplayThumbnailReadyAtTextureId(int textureId, int portraitMode){}
+      public void onEveryplayAccountDidChange(){}
+
+
+      };
+
+
+      public void AndroidThunkJava_Everyplay_StartRecording()
+      {
+      Everyplay.startRecording();
+      Log.debug("Everyplay.startRecording");
+
+      }
+      public void AndroidThunkJava_Everyplay_StopRecording()
+      {
+      Everyplay.stopRecording();
+      Log.debug("Everyplay.stopRecording");
+
+      }
+      public void AndroidThunkJava_Everyplay_PauseRecording()
+      {
+      Everyplay.pauseRecording();
+
+      }
+      public void AndroidThunkJava_Everyplay_ResumeRecording()
+      {
+      Everyplay.resumeRecording();
+
+      }
+      public void AndroidThunkJava_Everyplay_PlayLastRecording()
+      {
+      Everyplay.playLastRecording();
+      Log.debug("Everyplay.playLastRecording");
+
+      }
+      public void AndroidThunkJava_Everyplay_ShowEveryplaySharingModal()
+      {
+      Everyplay.showEveryplaySharingModal();
+      //Everyplay.showEveryplay();
+
+      }
+
+
+
+    </insert>
+  </gameActivityClassAdditions>
+
+ 
+
+
+  <!-- optional additions to GameActivity onCreate metadata reading in GameActivity.java -->
+  <gameActivityReadMetadataAdditions>
+    <insert>
+	// CLIENT_ID, CLIENT_SECRET, REDIRECT_URI
+
+    String clientId = bundle.getString("com.epicgames.ue4.Everyplay.ClientId");
+    String clientSecret = bundle.getString("com.epicgames.ue4.Everyplay.ClientSecret");
+    String redirectURI = bundle.getString("com.epicgames.ue4.Everyplay.RedirectURI");
+
+
+
+    Everyplay.configureEveryplay(clientId, clientSecret, redirectURI);
+	Log.debug(clientId);
+    Everyplay.initEveryplay(Everyplaylistener, this);
+    Everyplay.setMaxRecordingMinutesLength(1);
+    Log.debug("Everyplay.initEveryplay");
+  
+
+    </insert>
+  </gameActivityReadMetadataAdditions>
+
+  <!-- optional additions to GameActivity onCreate in GameActivity.java -->
+  <gameActivityOnCreateAdditions>
+    <insert>
+      
+      //Everyplay.initEveryplay(Everyplaylistener, this);
+      //Everyplay.setMaxRecordingMinutesLength(1);
+      //Log.debug("Everyplay.initEveryplay");
+
+
+    </insert> 
+
+    
+
+  </gameActivityOnCreateAdditions>
+
+  <!-- optional additions to GameActivity onDestroy in GameActivity.java -->
+  <gameActivityOnDestroyAdditions>
+    <insert>
+
+    </insert>
+  </gameActivityOnDestroyAdditions>
+
+
+  <!-- optional additions to GameActivity onStart in GameActivity.java -->
+  <gameActivityOnStartAdditions>
+    <insert>
+
+    </insert>
+  </gameActivityOnStartAdditions>
+
+  <!-- optional additions to GameActivity onStop in GameActivity.java -->
+  <gameActivityOnStopAdditions>
+    <insert>
+
+    </insert>
+  </gameActivityOnStopAdditions>
+
+
+  <!-- optional additions to GameActivity onPause in GameActivity.java	-->
+  <gameActivityOnPauseAdditions>
+    <insert>
+
+    </insert>
+  </gameActivityOnPauseAdditions>
+
+
+  <!-- optional additions to GameActivity onResume in GameActivity.java	-->
+  <gameActivityOnResumeAdditions>
+    <insert>
+
+    </insert>
+  </gameActivityOnResumeAdditions>
+
+
+  <!-- optional additions to GameActivity onActivityResult in GameActivity.java -->
+  <gameActivityOnActivityResultAdditions>
+  </gameActivityOnActivityResultAdditions>
+
+
+  <!-- optional libraries to load in GameActivity.java before libUE4.so -->
+  <soLoadLibrary>
+    <loadLibrary name="everyplay" failmsg="Everyplay library not loaded and required!" />
+    <!-- need this if plugin enabled and supported architecture, even if not packaged for GearVR -->
+    <!-- 	<if condition="bSupported">
+			<true>
+				<loadLibrary name="vrapi" failmsg="GearVR library not loaded and required!" />
+			</true>
+		</if> -->
+  </soLoadLibrary>
+
+
+</root>
