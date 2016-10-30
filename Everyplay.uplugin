@@ -6,6 +6,7 @@
 	"Description": "This plugin record/shares gameplay videos via Everyplay.",
 	"Category": "Video Recording/Sharing",
 	"CreatedBy": "Pandora Entertainment Ltd",
+	"CreatedByURL": "www.pandoraentertainment.co.uk",
 	"DocsURL": "",
 	"MarketplaceURL": "",
 	"Modules": [
